@@ -1,0 +1,5 @@
+- hosts: local
+  remote_user: vagrant
+  sudo: yes
+  tasks:
+    - include: services.yml

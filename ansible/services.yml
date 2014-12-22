@@ -1,0 +1,4 @@
+- name: nginx in installed
+  apt: name=nginx state=present
+- name: nginx is running
+  service: name=nginx state=started
