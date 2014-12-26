@@ -1,0 +1,23 @@
+- name: sites-enabled directory is present
+  file:
+    path=/etc/nginx/sites-enabled
+    state=directory
+  tags: [nginx]
+- name: certs-enabled directory is present
+  file:
+    path=/etc/nginx/certs-enabled
+    state=directory
+  tags: [nginx]
+- name: log directory is present
+  file:
+    path=/var/log/nginx
+    state=directory
+  tags: [nginx]
+- name: nginx container is running
+  docker:
+    image: "dockerfile/nginx"
+    name: "nginx"
+    state: "running"
+    ports: "80:80"
+    volumes: "{{ volumes }}"
+  tags: [nginx]

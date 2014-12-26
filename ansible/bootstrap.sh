@@ -1,22 +1,27 @@
 #!/bin/bash
 
-# Common
-sudo apt-get install -y whois
-
 # Ansible
-sudo apt-get install software-properties-common
-sudo apt-add-repository -y ppa:ansible/ansible
-sudo apt-get update
-sudo apt-get install -y ansible
+apt-get install software-properties-common
+apt-add-repository -y ppa:ansible/ansible
+apt-get update
+apt-get install -y ansible
 
+# SSH key
 # ssh-keygen -t rsa
-# ssh-copy-id vagrant@localhost
+# ssh-copy-id vagrant@127.0.0.1 -p 2222
+
+# Run
+ansible-playbook bdd.yml
+
+
+
+
 
 # Playing around
-ansible local -m ping
-ansible local -a '/bin/echo hello'
-ansible local -m file -a 'dest=/tmp/ansible mode=755 owner=vagrant group=vagrant state=directory'
-ansible local -m apt -a 'name=openjdk-7-jre state=present' --sudo
+ansible local -u vagrant -m ping -u vagrant
+ansible local -u vagrant -a '/bin/echo hello'
+ansible local -u vagrant -m file -a 'dest=/tmp/ansible mode=755 owner=vagrant group=vagrant state=directory'
+ansible local -u vagrant -m apt -a 'name=openjdk-7-jre state=present' --sudo
 
 ## User
 mkpasswd --method=SHA-512 welcome
@@ -39,4 +44,4 @@ ansible-playbook services.yml
 ansible-playbook include.yml
 
 ## Roles
-ansible-playbook roles.yml
+ansible-playbook bdd.yml

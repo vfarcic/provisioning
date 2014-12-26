@@ -1,0 +1,20 @@
+- name: confd is uncompressed
+  copy:
+    src=confd-0.6.3-linux-amd64
+    dest=/opt/confd-0.6.3-linux-amd64
+    mode="0755"
+  tags: [confd]
+- name: confd has the soft link
+  file:
+    src=/opt/confd-0.6.3-linux-amd64
+    dest=/usr/local/bin/confd
+    state=link
+  tags: [confd]
+- name: confd/confd.d directory is present
+  file:
+    path=/etc/confd/conf.d
+    state=directory
+- name: confd/templates directory is present
+  file:
+    path=/etc/confd/templates
+    state=directory

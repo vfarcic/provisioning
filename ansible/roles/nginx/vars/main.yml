@@ -1,0 +1,4 @@
+volumes:
+  - '/etc/nginx/sites-enabled:/etc/nginx/sites-enabled'
+  - '/etc/nginx/certs-enabled:/etc/nginx/certs-enabled'
+  - '/var/log/nginx:/var/log/nginx'

@@ -1,8 +1,2 @@
-[local]
-127.0.0.1
-
-[innova]
-int.innova.mdp.es
-
-[services]
-int.services.mdp.es
+[bdd]
+127.0.0.1:2222

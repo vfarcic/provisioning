@@ -1,0 +1,9 @@
+- hosts: bdd
+  remote_user: vagrant
+  sudo: yes
+  roles:
+    - etcd
+    - confd
+    - docker
+    - nginx
+    - bdd

@@ -1,6 +1,0 @@
-- hosts: local
-  remote_user: vagrant
-  sudo: yes
-  roles:
-    - common
-    - proxy
