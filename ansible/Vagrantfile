@@ -6,7 +6,11 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
   # config.vm.provision "shell", path: "bootstrap.sh"
+  config.vm.network :forwarded_port, host: 8000, guest: 80
   config.vm.synced_folder ".", "/vagrant"
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "bdd.yml"
+  end
   config.vm.provider "virtualbox" do |v|
     v.name = "provisioning-ansible"
     v.memory = 2048

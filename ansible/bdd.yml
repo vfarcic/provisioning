@@ -1,4 +1,4 @@
-- hosts: bdd
+- hosts: all
   remote_user: vagrant
   sudo: yes
   roles:

@@ -2,13 +2,18 @@
   copy:
     src=bdd.toml
     dest=/etc/confd/conf.d/bdd.toml
+  tags: [bdd]
 - name: bdd.conf.tmpl is present
   copy:
     src=bdd.conf.tmpl
     dest=/etc/confd/templates/bdd.conf.tmpl
-- name: BDD Assistant container is running
-  docker:
-    image="vfarcic/bdd"
-    name=bdd
-    state=running
-    ports="9000:9000"
+  tags: [bdd]
+- name: deploy-bdd script is present
+  copy:
+    src=deploy-bdd.sh
+    dest=/usr/local/bin/deploy-bdd.sh
+    mode="0755"
+  tags: [bdd]
+- name: deploy-bdd script is run
+  shell: deploy-bdd.sh
+  tags: [bdd]
