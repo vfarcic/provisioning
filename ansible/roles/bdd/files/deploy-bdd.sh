@@ -18,16 +18,24 @@ echo "Starting $COLOR deployment on port $PORT"
 set +e
 docker stop bdd-$COLOR
 docker rm bdd-$COLOR
+docker stop bdd-runner-phantomjs
+docker rm bdd-runner-phantomjs
 set -e
 docker pull vfarcic/bdd
 docker run -d --name bdd-$COLOR -p $PORT:9000 vfarcic/bdd
 sleep 5
+echo "Testing $COLOR deployment on port $PORT"
+docker pull vfarcic/bdd-runner-phantomjs
+docker run -t --rm --name bdd-runner-phantomjs vfarcic/bdd-runner-phantomjs \
+  --story_path data/stories/tcbdd/stories/storyEditorForm.story \
+  --composites_path /opt/bdd/composites/TcBddComposites.groovy \
+  -P url=http://172.17.42.1:$PORT -P widthHeight=1024,768
 etcdctl set /bdd/color $COLOR
 etcdctl set /bdd/port $PORT
 etcdctl set /bdd/$COLOR/port $PORT
 etcdctl set /bdd/$COLOR/status running
 confd -onetime -backend etcd -node 127.0.0.1:4001
 echo "Stopping $CURRENT_COLOR deployment"
-sleep 60
+sleep 10
 docker stop bdd-$CURRENT_COLOR
 etcdctl set /bdd/$CURRENT_COLOR/status stopped
