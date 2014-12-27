@@ -43,5 +43,7 @@ confd -onetime -backend etcd -node 127.0.0.1:4001
 
 echo "Stopping $CURRENT_COLOR deployment"
 sleep 10
+set +e
 docker stop bdd-$CURRENT_COLOR
 etcdctl set /bdd/$CURRENT_COLOR/status stopped
+set -e
