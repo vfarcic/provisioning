@@ -15,7 +15,7 @@
     dest=/usr/local/bin/etcdctl
     state=link
   tags: [etcd]
-- name: etcd service files is present
+- name: etcd service file is present
   copy:
     src=etcd.conf
     dest=/etc/init/etcd.conf
