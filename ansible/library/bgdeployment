@@ -5,13 +5,8 @@ import json
 import shlex
 import subprocess
 
-# TODO: Required args: blue_port, green_port, name
 # TODO: Required programs: etcd
-# TODO: Add status get|set
-
-# class BGDeployment(object):
-#     def __new__(cls, *args, **kwargs):
-#         return load_platform_subclass(BGDeployment, args, kwargs)
+# TODO: Comments and webdocs
 
 def etcd_get(module, key):
     (rc, out, err) = module.run_command("etcdctl get /%s/%s" % (module.params['name'], key))
@@ -37,7 +32,7 @@ def get_new_port(current_color, green_port, blue_port):
     else:
         return blue_port
 
-def get(module):
+def retrieve(module):
     current_color = etcd_get(module, 'color')
     current_port = etcd_get(module, 'port')
     new_color = get_new_color(current_color)
@@ -64,19 +59,16 @@ def change(module):
     )
 
 def main():
-    # args_file = sys.argv[1]
-    # args_data = file(args_file).read()
-
     module = AnsibleModule(
         argument_spec = dict(
-            state = dict(default='get', choices=['get', 'change']),
+            state = dict(default='retrieved', choices=['retrieved', 'changed']),
             name = dict(required=True),
             blue_port = dict(required=True),
             green_port = dict(required=True)
         )
     )
-    if module.params['state'] == 'get':
-        get(module)
+    if module.params['state'] == 'retrieved':
+        retrieve(module)
     else:
         change(module)
 

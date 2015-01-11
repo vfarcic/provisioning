@@ -1,0 +1,57 @@
+- name: TOML is present
+  copy:
+    src=bdd.toml
+    dest=/etc/confd/conf.d/bdd.toml
+  tags: [bdd]
+
+- name: Config template is present
+  copy:
+    src=bdd.conf.tmpl
+    dest=/etc/confd/templates/bdd.conf.tmpl
+  tags: [bdd]
+
+- name: Colors are retrieved
+  bgdeployment:
+    name: bdd
+    blue_port: 9001
+    green_port: 9002
+  register: result
+  tags: [bdd]
+
+- name: New container process is absent
+  docker:
+    image: "vfarcic/bdd"
+    name: "bdd-{{ result.new_color }}"
+    state: "absent"
+  tags: [bdd]
+
+- name: New container image is pulled
+  command: docker pull vfarcic/bdd
+
+- name: New container process is running
+  docker:
+    image: "vfarcic/bdd"
+    name: "bdd-{{ result.new_color }}"
+    state: "running"
+    ports: "{{ result.new_port }}:9000"
+  tags: [bdd]
+
+- name: Colors are changed
+  bgdeployment:
+    name: bdd
+    blue_port: 9001
+    green_port: 9002
+    state: changed
+  register: result
+  tags: [bdd]
+
+- name: Old container process is absent
+  docker:
+    image: "vfarcic/bdd"
+    name: "bdd-{{ result.old_color }}"
+    state: "absent"
+  tags: [bdd]
+
+#- name: Deployment is run
+#  shell: deploy-bdd.sh
+#  tags: [bdd]
